@@ -1,6 +1,6 @@
 
 # Developpement d’applications reparties
-## Activite 1_1 du TP
+## TP
 
 
 Mahdi Mzid
