@@ -19,9 +19,29 @@ public class Server {
 			InputStream is = socket.getInputStream();
 			int nb = is.read();
 			
-			//Calcule du produit
-			int x = nb*5;
+			//Recoie du type de service
+			int op = is.read();
 			
+			//Calcul
+			int x = 0;
+			switch (op) {
+			case 1:
+				x = nb+5;
+				break;
+			case 2:
+				x = nb-5;
+				break;
+			case 3:
+				x = nb*5;
+				break;
+			case 4:
+				x = nb/5;
+				break;
+				
+
+			default:
+				break;
+			}
 			//Envoie du résultat
 			OutputStream os = socket.getOutputStream();
 			os.write(x);
