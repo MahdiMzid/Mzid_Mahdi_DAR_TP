@@ -10,10 +10,11 @@ public class Client {
 		try {
 			
 			//Connexion
-			int port=1234;
-			InetAddress server= InetAddress.getLocalHost();
 			System.out.println("Je suis un client pas encore connecté...");
-			Socket socket = new Socket(server,port);
+			InetAddress ia = InetAddress.getByName("192.168.0.8");
+			InetSocketAddress isa = new InetSocketAddress(ia,1234);
+			Socket socket = new Socket();
+			socket.connect(isa);
 			System.out.println("Je suis un client connecté");
 			
 			// Lecture d'un entier
