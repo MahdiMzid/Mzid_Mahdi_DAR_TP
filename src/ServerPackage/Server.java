@@ -17,25 +17,26 @@ public class Server {
 			System.out.println("un client est connecté");
 			
 			// Flux de comunication
-			InputStream is = socket.getInputStream();
 			OutputStream os = socket.getOutputStream();
+			InputStream is = socket.getInputStream();
+
 			
-			//Reçoie du premier entier
+			// Flux de traitement
+			PrintWriter pw = new PrintWriter(os,true);
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader br = new BufferedReader(isr);
+			
+			
+			//Reçoie du premier entier
 			String s = br.readLine();
 			int e1 = Integer.parseInt(s);
 			
 			// Reçcoie du deuxieme entier
-			isr = new InputStreamReader(is);
-			br = new BufferedReader(isr);
 			s = br.readLine();
 			int e2 = Integer.parseInt(s);
 			
 			
 			//Recoie du type d'operation
-			isr = new InputStreamReader(is);
-			br = new BufferedReader(isr);
 			s = br.readLine();
 			
 			//Calcul
@@ -60,7 +61,7 @@ public class Server {
 			}
 			//Envoie du résultat
 			
-			PrintWriter pw = new PrintWriter(os,true);
+			
 			pw.println(r);
 			
 			// La dernière étape : Fermer socket
