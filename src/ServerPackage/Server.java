@@ -60,8 +60,6 @@ public class Server {
 				break;
 			}
 			//Envoie du résultat
-			
-			
 			pw.println(r);
 			
 			// La dernière étape : Fermer socket
