@@ -3,15 +3,18 @@ package OperationPackage;
 import java.io.Serializable;
 
 public class Operation implements Serializable{
-	public Operation(int op1, int op2, int result, char operation) {
+
+
+	private static final long serialVersionUID = 1L;
+	private int op1,op2,result;
+	private char operation;
+	
+	public Operation(int op1, int op2, char operation) {
 		super();
 		this.op1 = op1;
 		this.op2 = op2;
-		this.result = result;
 		this.operation = operation;
 	}
-	private int op1,op2,result;
-	private char operation;
 	public int getOp1() {
 		return op1;
 	}

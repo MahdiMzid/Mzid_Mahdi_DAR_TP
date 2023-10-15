@@ -1,6 +1,9 @@
 package ClientPackage;
 import java.net.*;
 import java.util.Scanner;
+
+import OperationPackage.Operation;
+
 import java.io.*;
 
 public class Client {
@@ -24,6 +27,7 @@ public class Client {
 			OutputStream os = socket.getOutputStream();
 			InputStream is = socket.getInputStream();
 			
+			/**
 			// Flux de traitement
 			PrintWriter pw = new PrintWriter(os,true);
 			InputStreamReader isr = new InputStreamReader(is);
@@ -55,13 +59,26 @@ public class Client {
 			
 			//Afficahge du résultat
 			System.out.println(nb1+" "+op+" "+nb2+"="+result);
+			**/
 			
+			//Communication par objet Sérializable
+			// Flux de traitement
+			ObjectOutputStream oos = new ObjectOutputStream(os);
+			ObjectInputStream ois = new ObjectInputStream(is);
+			
+			//Envoie d'objet
+			Operation O1= new Operation(55,35,'*');
+			oos.writeObject(O1);
+			
+			// Reçcoit d'objet
+			O1 = (Operation)ois.readObject();
+			System.out.println("Résultat = "+O1.getResult());
 		
 			
 			//Fermeture du Connexion
 			socket.close();
 			
-		} catch (IOException e) {
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 

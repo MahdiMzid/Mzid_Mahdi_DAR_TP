@@ -1,6 +1,9 @@
 package ServerPackage;
 import java.net.*;
 import java.util.Scanner;
+
+import OperationPackage.Operation;
+
 import java.io.*;
 
 public class Server {
@@ -20,7 +23,7 @@ public class Server {
 			OutputStream os = socket.getOutputStream();
 			InputStream is = socket.getInputStream();
 
-			
+			/**
 			// Flux de traitement
 			PrintWriter pw = new PrintWriter(os,true);
 			InputStreamReader isr = new InputStreamReader(is);
@@ -61,12 +64,50 @@ public class Server {
 			}
 			//Envoie du résultat
 			pw.println(r);
+			**/
+			
+			//Communication par objet Sérializable
+			// Flux de traitement
+			ObjectOutputStream oos = new ObjectOutputStream(os);
+			ObjectInputStream ois = new ObjectInputStream(is);
+			
+			// Reçoie d'objet
+			Operation o = (Operation)ois.readObject();
+			
+			// Récupération des parameters
+			int nb1 = o.getOp1();
+			int nb2 = o.getOp2();
+			char op = o.getOperation();
+			
+			// Calcul
+			switch (op) {
+			case '+':
+				o.setResult(nb1 + nb2);
+				break;
+			case '-':
+				o.setResult(nb1 - nb2);
+				break;
+			case '*':
+				o.setResult(nb1 * nb2);
+				break;
+			case '/':
+				o.setResult(nb1 / nb2);
+				break;
+				
+
+			default:
+				break;
+			}
+			
+			// Envoie d'objet
+			oos.writeObject(o);
+			
 			
 			// La dernière étape : Fermer socket
 			socket.close();
 			socketServer.close();
 			
-		} catch (IOException e) {
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 
