@@ -11,7 +11,7 @@ public class Client {
 			
 			//Connexion
 			System.out.println("Je suis un client pas encore connecté...");
-			InetAddress ia = InetAddress.getByName("192.168.0.8");
+			InetAddress ia = InetAddress.getByName("10.25.12.183");
 			InetSocketAddress isa = new InetSocketAddress(ia,1234);
 			Socket socket = new Socket();
 			socket.connect(isa);
@@ -19,52 +19,44 @@ public class Client {
 			
 			// Lecture d'un entier
 			Scanner scanner = new Scanner(System.in);
-			System.out.println("Taper un entier");
-			int nb = scanner.nextInt();
 			
-			// Envoie du entier vers le server
+			// Flux de communication
 			OutputStream os = socket.getOutputStream();
-			os.write(nb);
+			InputStream is = socket.getInputStream();
 			
-			// Choix du service
-			int x=0;
-			while(x<1 || x>4)
-				{
-				System.out.println("Spécifer le type de calcul");
-				System.out.println("1 pour l'addition");
-				System.out.println("2 pour la soustraction");
-				System.out.println("3 pour la multiplication");
-				System.out.println("4 pour la division");
-				x = scanner.nextInt();
-				}
+			// Flux de traitement
+			PrintWriter pw = new PrintWriter(os,true);
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
 			
+			//Envoie du premier entier
+			System.out.println("Taper Le premier entier");
+			int nb1 = scanner.nextInt();
+			pw.println(nb1);
 			
-			//Envoie le type de service
-			os.write(x);
+			//Envoie du deuxieme entier
+			System.out.println("Taper le deuxieme entier");
+			int nb2 = scanner.nextInt();
+			pw.println(nb2);
+			
+			//Envoie du type d'operation
+			String op;
+			do {
+				System.out.println("Choix d'operation:");
+				op = scanner.nextLine();
+			} while (!(op.equals("+")) && !(op.equals("-")) && !(op.equals("*"))&& !(op.equals("/")));
+			pw.println(op);
+
 			
 			
 			//Reçoit du résultat
-			InputStream is = socket.getInputStream();
-			int result = is.read();
+			String s = br.readLine();
+			int result = Integer.parseInt(s);
 			
 			//Afficahge du résultat
-			switch (x) {
-			case 1:
-				System.out.println("Le resultat de "+nb+" + 5 = "+result);
-				break;
-			case 2:
-				System.out.println("Le resultat de "+nb+" - 5 = "+result);				
-				break;
-			case 3:
-				System.out.println("Le resultat de "+nb+" * 5 = "+result);
-				break;
-			case 4:
-				System.out.println("Le resultat de "+nb+" / 5 = "+result);
-				break;
-
-			default:
-				break;
-			}
+			System.out.println(nb1+" "+op+" "+nb2+"="+result);
+			
+		
 			
 			//Fermeture du Connexion
 			socket.close();

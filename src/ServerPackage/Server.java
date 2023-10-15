@@ -1,5 +1,6 @@
 package ServerPackage;
 import java.net.*;
+import java.util.Scanner;
 import java.io.*;
 
 public class Server {
@@ -15,27 +16,42 @@ public class Server {
 			Socket socket = socketServer.accept();
 			System.out.println("un client est connecté");
 			
-			//Reçoie du entier
+			// Flux de comunication
 			InputStream is = socket.getInputStream();
-			int nb = is.read();
+			OutputStream os = socket.getOutputStream();
 			
-			//Recoie du type de service
-			int op = is.read();
+			//Reçoie du premier entier
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
+			String s = br.readLine();
+			int e1 = Integer.parseInt(s);
+			
+			// Reçcoie du deuxieme entier
+			isr = new InputStreamReader(is);
+			br = new BufferedReader(isr);
+			s = br.readLine();
+			int e2 = Integer.parseInt(s);
+			
+			
+			//Recoie du type d'operation
+			isr = new InputStreamReader(is);
+			br = new BufferedReader(isr);
+			s = br.readLine();
 			
 			//Calcul
-			int x = 0;
-			switch (op) {
-			case 1:
-				x = nb+5;
+			int r=0;
+			switch (s) {
+			case "+":
+				r = e1 + e2;
 				break;
-			case 2:
-				x = nb-5;
+			case "-":
+				r = e1 - e2;
 				break;
-			case 3:
-				x = nb*5;
+			case "*":
+				r = e1 * e2;
 				break;
-			case 4:
-				x = nb/5;
+			case "/":
+				r = e1 / e2;
 				break;
 				
 
@@ -43,8 +59,9 @@ public class Server {
 				break;
 			}
 			//Envoie du résultat
-			OutputStream os = socket.getOutputStream();
-			os.write(x);
+			
+			PrintWriter pw = new PrintWriter(os,true);
+			pw.println(r);
 			
 			// La dernière étape : Fermer socket
 			socket.close();
